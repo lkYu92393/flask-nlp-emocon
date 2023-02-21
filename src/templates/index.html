@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emocon Prediction</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body > div {
+            width: 600px;
+            margin: auto;
+        }
+        body > div > textarea {
+            width: 100%;
+            margin: 0 0 1rem 0;
+        }
+        #response {
+            margin: 0 0 1rem 0;
+        }
+        #button {
+            width:fit-content;
+            background: #5451ff;
+            color: white;
+            padding: 1rem 2rem;
+            margin: 0 0 1rem 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div>Tell me a sentence and I will predict the emotion hidden within.</div>
+        <textarea name="text" id="text" rows="5"></textarea>
+        <div id="response"></div>
+        <div id="button">Submit</div>
+    </div>
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("button").addEventListener("click", () => {
+            let sentence = document.getElementById("text").value.toLowerCase();
+            fetch("/api/nlplab", {
+                method: "POST",
+                body: JSON.stringify({
+                    text: sentence
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            .then(res => res.json())
+            .then(res => document.getElementById("response").innerText = res.body);
+        }) 
+    });
+</script>
+</html>
