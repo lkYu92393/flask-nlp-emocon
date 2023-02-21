@@ -1,4 +1,6 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, request, render_template, jsonify
+
+from usrlib.nlp import get_emocon_for_input
 
 app = Flask(__name__)
 
@@ -9,5 +11,7 @@ def index():
 
 @app.route("/api/nlplab", methods=["POST"])
 def nlplab():
-    response = {"body":"test"}
+    text = request.json["text"]
+    emocon = get_emocon_for_input(text)
+    response = {"body": emocon}
     return jsonify(response)
