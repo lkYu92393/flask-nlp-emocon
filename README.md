@@ -1,3 +1,3 @@
-# web_curriculam_vitae
+# flask-nl-emocon
 
-See https://app.netlify.com/sites/jimyuvitae/overview
+Using Bert NLP model, convert an input of text to an emocon that represent the emotion of the sentence.
