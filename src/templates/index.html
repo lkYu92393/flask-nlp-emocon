@@ -44,6 +44,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("button").addEventListener("click", () => {
+            document.getElementById("response").innerHTML = "Loading...";
             let sentence = document.getElementById("text").value.toLowerCase();
             fetch("/api/nlplab", {
                 method: "POST",

@@ -5,11 +5,23 @@ import torch
 from torch.utils.data import TensorDataset, random_split, DataLoader, RandomSampler, SequentialSampler
 from transformers import BertTokenizer, BertConfig, BertModel, BertForSequenceClassification
 
-label_type = ['joy', 'love', 'sadness', 'surprise', 'fear', 'anger']
-html_hexcode = ["&#128513;", "&#128525;", "&#128534;", "&#128558;", "&#128561;", "&#128545;"]
+label_type = ['sadness', 'anger', 'love', 'surprise', 'fear', 'joy']
+html_hexcode = {
+    "sadness": "&#128534;",
+    "anger": "&#128545;",
+    "love":"&#128525;",
+    "surprise": "&#128558;", 
+    "fear": "&#128561;",
+    "joy": "&#128513;",
+    }
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 vocab = tokenizer.get_vocab() # a dictionary
 path = os.path.dirname(__file__) + "/"
+
+try:
+    cls_model = BertForSequenceClassification.from_pretrained(path)
+except:
+    cls_model = None
 
 def convert_input_to_torch_format(text):
     encoded_dict = tokenizer.encode_plus(
@@ -24,11 +36,12 @@ def convert_input_to_torch_format(text):
     return encoded_dict['input_ids'], encoded_dict['attention_mask']
 
 def get_emocon_for_input(text):
-    cls_model = BertForSequenceClassification.from_pretrained(path)
+    if cls_model == None:
+        return "Missing File."
     input_ids, attention_mask = convert_input_to_torch_format(text)
     output = cls_model(input_ids, attention_mask=attention_mask)
 
-    emocon = html_hexcode[np.argmax(output.logits.detach().numpy())]
+    emocon = html_hexcode[label_type[np.argmax(output.logits.detach().numpy())]]
     return emocon
 
 
