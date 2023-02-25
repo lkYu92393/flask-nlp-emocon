@@ -21,6 +21,7 @@
         }
         #response {
             margin: 0 0 1rem 0;
+            font-size: 3rem;
         }
         #button {
             width:fit-content;
@@ -54,7 +55,10 @@
                 }
             })
             .then(res => res.json())
-            .then(res => document.getElementById("response").innerText = res.body);
+            .then(res => {
+                console.log(res.body);
+                document.getElementById("response").innerHTML = res.body;
+            });
         }) 
     });
 </script>

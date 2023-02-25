@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 
-from usrlib.nlp import get_emocon_for_input
+from usrlib.nlp import get_emocon_for_input, test_accuracy
 
 app = Flask(__name__)
 
@@ -15,3 +15,9 @@ def nlplab():
     emocon = get_emocon_for_input(text)
     response = {"body": emocon}
     return jsonify(response)
+
+
+@app.route("/test", methods=["GET"])
+def nlplab_test():
+    test = test_accuracy()
+    return test
